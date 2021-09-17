@@ -20,10 +20,10 @@ function setup() {
   createCanvas(displayWidth,displayHeight);
   bgsprite=createSprite(width/2, height/2, width, height);
   bgsprite.addImage(bg);
-  bgsprite.velocityX=-3;
+  bgsprite.velocityX=-4;
   human=createSprite(300,height-50,50,50);
   human.addAnimation("walking",man);
-  human.debug=true;
+  //human.debug=true;
   human.setCollider("rectangle",-20,0,10,50)
   firegroup=new Group()
   
@@ -37,10 +37,12 @@ function draw() {
     }  
     spawnTrash();
     spawnFire();
-  
+    console.log(trashgroup.length)
     for(var i=trashgroup.length-1;i>=0;i--){
       //count = i;
+     
       if(trashgroup[i].isTouching(human)){
+        console.log("touching")
         trashgroup[i].addImage(flowerimg)
         trashgroup[i].scale=0.1
        // if(count!=prev){
@@ -52,32 +54,38 @@ function draw() {
     }
     
       if(keyDown("UP_ARROW")){
-        human.y-=2;
+        human.y-=5;
       }
       if(keyDown("DOWN_ARROW")){
-        human.y+=2;
+        human.y+=5;
       }
       if(firegroup.isTouching(human)){
         gamestate="over";
   
       }
     console.log(bgsprite.x)
-    drawSprites();
+    
    
   }
   else{
     bgsprite.velocityX=0;
     bgsprite.addImage(goimg);
+    bgsprite.scale= 1.8
     firegroup.destroyEach();
+    for(var i=trashgroup.length-1;i>=0;i--){
+     trashgroup[i].destroy()
+      
+    }
     trashgroup=[];
     human.destroy();
   }
+  drawSprites();
   textSize(35);
     fill("white")
     text("Score: "+score,width-300,100);
 }
 function spawnTrash(){
-  if(frameCount%250==0){
+  if(frameCount%150==0){
     var rand=Math.round(Math.random(1,2));
     var y
     if(rand==1){
@@ -89,9 +97,9 @@ function spawnTrash(){
     
     var trash=createSprite(width,y,50,50);
     trash.addImage(trashimg);
-    trash.scale=0.2;
-    trash.velocityX=-3;
-    trash.debug=true;
+    trash.scale=0.1;
+    trash.velocityX=-4;
+    //trash.debug=true;
     trash.setCollider("rectangle",0,0,10,10)
     //trashgroup.add(trash)
     trashgroup.push(trash)
@@ -112,8 +120,8 @@ function spawnFire(){
     var trash=createSprite(width,y,50,50);
     trash.addImage(fireimg);
     trash.scale=0.8;
-    trash.velocityX=-3;
-    trash.debug=true;
+    trash.velocityX=-4;
+    //trash.debug=true;
     trash.setCollider("rectangle",0,0,100,100)
     firegroup.add(trash)
     //firegroup.push(trash)
